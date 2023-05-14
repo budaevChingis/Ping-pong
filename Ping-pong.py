@@ -1,10 +1,10 @@
 from pygame import*
 
-window = display.set_mode((1000, 1000))
+window = display.set_mode((1000, 700))
 display.set_caption('Пинг Понг')
 
 
-background = transform.scale(image.load('фон1.jpg'), (1000, 1000))
+background = transform.scale(image.load('Group1.png'), (1000, 700))
 
 class GameSprite(sprite.Sprite):
     def __init__(self, p_image, x, y, speed, w, h):
@@ -22,23 +22,34 @@ class GameSprite(sprite.Sprite):
 class Player(GameSprite):
     def update1(self):
         kays = key.get_pressed()
-        if kays[K_w] and self.rect.x <990:
-            self.rect.x += self.speed
-        if kays[K_s] and self.rect.x > 10:
-            self.rect.x -= self.speed 
+        if kays[K_w] and self.rect.y > 25:
+            self.rect.y -= self.speed
+        if kays[K_s] and self.rect.y < 555:
+            self.rect.y += self.speed 
 
     def update2(self):
         kays = key.get_pressed()
-        if kays[K_UP] and self.rect.x <990:
-            self.rect.x += self.speed
-        if kays[K_DOWN] and self.rect.x > 10:
-            self.rect.x -= self.speed 
+        if kays[K_UP] and self.rect.y > 25:
+            self.rect.y -= self.speed
+        if kays[K_DOWN] and self.rect.y < 555:
+            self.rect.y += self.speed 
+
+
+class Ball(GameSprite):
+    def updateB(self):
+        
+        
+        self.rect.x += self.speed 
+        self.rect.y += self.speed 
+        '''if self.rect.y < 25 or self.rect.y > 645:
+            self.diry *= -1 '''       
         
     
+    
 
-#Racket1 = Playr()
-#racket2 = 
-#ball = 
+Racket1 = Player('racketL.png', 20, 500, 20, 30, 120)
+Racket2 = Player('racketR.png', 950, 500, 20, 30, 120)
+Ball = Ball('ball.png', 50, 50, 20, 40, 40)
 
 
 
@@ -49,6 +60,12 @@ while game:
             game = False
     
     window.blit(background, (0, 0))
+    Racket1.update1()
+    Racket1.resat()
+    Racket2.update2()
+    Racket2.resat()
+    Ball.updateB()
+    Ball.resat()
 
     time.delay(50)
     display.update()
