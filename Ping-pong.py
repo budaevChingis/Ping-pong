@@ -3,7 +3,8 @@ font.init()
 window = display.set_mode((1000, 700))
 display.set_caption('Пинг Понг')
 
-font1 = font.SysFont('Courier New', 60)
+font1 = font.SysFont('Courier New', 70)
+font2 = font.SysFont('Courier New', 40)
 win1 = font1.render('LEFT PLAYER WIN', True, (0, 255, 0))
 win2 = font1.render('RIGHT PLAYER WIN', True, (0, 255, 0))
 
@@ -39,6 +40,9 @@ class Player(GameSprite):
             self.rect.y += self.speed 
 
 
+scorL = 0
+scorR = 0
+
 class Ball(GameSprite):
     def __init__(self, p_image, x, y, speed, w, h, speed_y):
         super().__init__(p_image, x, y, speed, w, h)
@@ -55,7 +59,7 @@ class Ball(GameSprite):
 
 Racket1 = Player('racketL.png', 20, 500, 20, 30, 120)
 Racket2 = Player('racketR.png', 950, 500, 20, 30, 120)
-Ball = Ball('ball.png', 50, 50, 5, 40, 40, -5)
+Ball = Ball('ball.png', 50, 50, 8, 40, 40, -8)
 
 #sprite.collide_rect(a, b)
 
@@ -78,12 +82,29 @@ while game:
             Ball.speed *= -1
         
         if Ball.rect.x < 0:
-            window.blit(win2, (260, 200))
+            scorR += 1
+            Ball.rect.x = 480
+            Ball.rect.y = 330
+            Ball.speed_y *= -1
+            Ball.speed *= -1
+        if scorR >= 5:
+            window.blit(transform.scale(image.load('right.png'), (1000, 700)), (0, 0))
             finish = True
+
         if Ball.rect.x > 990:
-            window.blit(win1, (260, 200))
+            scorL += 1
+            Ball.rect.x = 480
+            Ball.rect.y = 330
+            Ball.speed_y *= -1
+            Ball.speed *= -1
+        if scorL >= 5:
+            window.blit(transform.scale(image.load('left.png'), (1000, 700)), (0, 0))
             finish = True
-    
+
+        textL = font2.render(str(scorL), True, (0, 0, 0))
+        window.blit(textL, (450, 35))
+        textR = font2.render(str(scorR), True, (0, 0, 0))
+        window.blit(textR, (525, 35))
 
     time.delay(10)
     display.update()
